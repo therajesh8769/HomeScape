@@ -1,0 +1,136 @@
+body
+{
+  padding-top: 30px;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.container
+{
+    flex:1;
+}
+
+.navbar
+{
+    height: 5rem;
+    background-color: white;
+}
+.fa-compass
+{
+    color: #fe42df;
+    font-size: 2rem;
+}
+.nav-link
+{
+    color:#222222 !important;
+}
+.f-info-links a
+{
+    text-decoration: none;
+    color:#222222;
+}
+.f-info-links a:hover
+{
+    text-decoration: underline;
+    
+}
+.f-info-links ,.f-info-socials,.f-info-brand
+{
+    width:100% ;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+
+}
+
+
+.f-info-socials i{
+    margin-right: 1rem;
+    font-size: 1.3rem;
+}
+.f-info
+{   text-align: center;
+    height: 8rem;
+    background-color: #ebebeb;
+    display: flex;
+   flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+}
+.listing-card
+{
+    border:none !important;
+    margin-bottom: 3rem;
+
+
+}
+.card-img-top
+{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+.card-body
+{
+    padding: 0 !important;
+
+}
+.card-text p{
+    font-weight: 400;
+}
+
+/* 
+.card-img-overlay
+{
+    opacity: 0 !important;
+    transition: opacity 0.3s ease-in-out !important;
+}
+.card:hover .card-img-overlay {
+    opacity: 0.2 !important;
+    background-color: white;
+} */
+
+
+
+.card-col {
+    position: relative; /* Ensures the overlay is positioned within this element */
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.card-col:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.listing-link {
+    text-decoration: none;
+    color: inherit;
+}
+.show-img
+{
+    height: 30vh;
+
+}
+.btns
+{
+    display: flex;
+    flex-direction: row;
+
+}
+.delete-btn
+{
+    background-color: red!important;
+}
+.show-card
+{
+   padding-left: 0;
+   padding-right: 0;
+
+}
+
+
+/*map*/
+#map { 
+  height: 400px;
+  width: 80vh; 
+}
