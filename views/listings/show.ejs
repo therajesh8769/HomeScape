@@ -7,7 +7,11 @@
     <div class="card col-6 offset-3 listing-card">
       <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image">
       <div class="card-body">
-        <p><i>Owned By: <%= listing.owner.username %></i></p>
+        <% if (listing.owner) { %>
+          <p><i>Owned By: <%= listing.owner.username %></i></p>
+        <% } else { %>
+          <p><i>Owned By: developer</i></p>
+        <% } %>
         <p><%= listing.description %></p>
         <p>&#8377;<%= listing.price.toLocaleString("en-IN") %></p>
         <p><%= listing.location %></p>
@@ -62,7 +66,7 @@
           <div class="card col-5 ms-3 mb-3 mt-3">
             <div class="card-body">
               <h5 class="card-title"><%= review.author.username %></h5>
-              <p class="starability-result card-text" data-rating="<%= review.rating %>">
+              <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
               <h6 class="card-subtitle mb-2 text-body-secondary">Date</h6>
               <p class="card-text"><%= review.comment %></p>
             </div>
@@ -79,6 +83,11 @@
       <div id="map" style="height: 400px;"></div>
     </div>
   </div>
+
+  <!-- Include Leaflet CSS and JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
   <script>
     var map = L.map('map').setView([<%= listing.coordinates.lat %>, <%= listing.coordinates.lng %>], 13);
 
@@ -90,6 +99,4 @@
       .bindPopup('<%= listing.title %>')
       .openPopup();
   </script>
-
-
 </body>

@@ -35,6 +35,7 @@ app.use(methodOverride("_method"));
 app.use(cookieParser());
 // Connect to MongoDB
 const dbUrl = process.env.ATLASDB_URL;
+//const dbUrl="mongodb://127.0.0.1:27017/wanderLust";
 
 
 

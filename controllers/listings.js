@@ -1,20 +1,21 @@
 const axios = require('axios');
 const Listing = require("../models/listing.js");
 
+// Function to fetch coordinates using OpenCage Geocoding API
 async function getCoordinates(address) {
     try {
-        const response = await axios.get('https://nominatim.openstreetmap.org/search', {
+        const apiKey =process.env.GEO_API; 
+        const response = await axios.get('https://api.opencagedata.com/geocode/v1/json', {
             params: {
                 q: address,
-                format: 'json',
-                addressdetails: 1,
+                key: apiKey,
                 limit: 1
             }
         });
-        console.log('API Response:', response.data);
-        if (response.data.length > 0) {
-            const { lat, lon} = response.data[0];
-           
+
+       
+        if (response.data.results.length > 0) {
+            const { lat, lng: lon } = response.data.results[0].geometry;
             return { lat, lon };
         } else {
             console.log('Address not found');
@@ -50,42 +51,39 @@ module.exports.show = async (req, res) => {
 };
 
 module.exports.createListing = async (req, res) => {
-    try{
+    try {
         let url = req.file.path;
-    let filename = req.file.filename;
-    let listingData = req.body.listing;
-    let location = listingData.location;
+        let filename = req.file.filename;
+        let listingData = req.body.listing;
+        let location = listingData.location;
 
-    const coordinates = await getCoordinates(location);
+        const coordinates = await getCoordinates(location);
 
         if (!coordinates || !coordinates.lat || !coordinates.lon) {
             req.flash("error", "Unable to get coordinates for the given location.");
             return res.redirect("/listings/new");
         }
-    const {lat,lon} = await getCoordinates(location);
-    if (!req.body.listing) {
-        throw new ExpressError(400, "Error! send valid data");
-    }
-    const lng=lon;
-    
-    
-   
-    
-    listingData.owner = req.user._id;
-    listingData.image = { url, filename };
-    listingData.coordinates ={lat,lng} ;
-    
-    const newListing = new Listing(listingData);
 
-    await newListing.save();
-    req.flash("success", "New Listing added");
-    res.redirect("/listings");
-}catch(error)
-{
-    console.error('Error creating listing:', error);
+        const { lat, lon } = coordinates;
+
+        if (!req.body.listing) {
+            throw new ExpressError(400, "Error! Send valid data");
+        }
+
+        listingData.owner = req.user._id;
+        listingData.image = { url, filename };
+        listingData.coordinates = { lat, lng: lon };
+
+        const newListing = new Listing(listingData);
+
+        await newListing.save();
+        req.flash("success", "New Listing added");
+        res.redirect("/listings");
+    } catch (error) {
+        console.error('Error creating listing:', error);
         req.flash("error", "An error occurred while creating the listing.");
         res.redirect("/listings/new");
-}
+    }
 };
 
 module.exports.renderEditForm = async (req, res) => {
