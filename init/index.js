@@ -1,19 +1,19 @@
-const mongoose=require("mongoose");
-const initData=require("./data.js");
-const Listing=require("../models/listing.js");
+require('dotenv').config();
+const mongoose = require("mongoose");
+const initData = require("./data.js");
+const Listing = require("../models/listing.js");
+
+const dbUrl ="mongodb+srv://rajesh26012004:rajesh2004@cluster0.vqzhhfz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 main()
-.then((res)=>
-{
-    console.log("connection success");
+  .then(() => {
+    console.log("Connection success");
+  })
+  .catch((err) => console.log("Connection error:", err));
 
-})
-.catch((err)=>console.log(err));
-async function main()
-{
-    await mongoose.connect("mongodb://127.0.0.1:27017/wonderLust");
-
-};
+async function main() {
+  await mongoose.connect(dbUrl);
+}
 const initDB=async ()=>
     {
        await Listing.deleteMany({});

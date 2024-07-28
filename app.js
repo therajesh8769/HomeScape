@@ -34,7 +34,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
 app.use(cookieParser());
 // Connect to MongoDB
-const dbUrl=process.env.ATLASDB_URL;
+const dbUrl = process.env.ATLASDB_URL;
+
+
+
 async function main() {
     try {
         await mongoose.connect(dbUrl,{

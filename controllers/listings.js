@@ -50,22 +50,27 @@ module.exports.show = async (req, res) => {
 };
 
 module.exports.createListing = async (req, res) => {
-    let url = req.file.path;
+    try{
+        let url = req.file.path;
     let filename = req.file.filename;
     let listingData = req.body.listing;
     let location = listingData.location;
 
-    const {lat,lon} = await getCoordinates(location);
-    if (!{lat,lon}) {
-        req.flash("error", "Unable to get coordinates for the given location.");
-        return res.redirect("/listings/new");
-    }
+    const coordinates = await getCoordinates(location);
 
+        if (!coordinates || !coordinates.lat || !coordinates.lon) {
+            req.flash("error", "Unable to get coordinates for the given location.");
+            return res.redirect("/listings/new");
+        }
+    const {lat,lon} = await getCoordinates(location);
     if (!req.body.listing) {
         throw new ExpressError(400, "Error! send valid data");
     }
-   
     const lng=lon;
+    
+    
+   
+    
     listingData.owner = req.user._id;
     listingData.image = { url, filename };
     listingData.coordinates ={lat,lng} ;
@@ -75,6 +80,12 @@ module.exports.createListing = async (req, res) => {
     await newListing.save();
     req.flash("success", "New Listing added");
     res.redirect("/listings");
+}catch(error)
+{
+    console.error('Error creating listing:', error);
+        req.flash("error", "An error occurred while creating the listing.");
+        res.redirect("/listings/new");
+}
 };
 
 module.exports.renderEditForm = async (req, res) => {
@@ -112,6 +123,7 @@ module.exports.updateListing = async (req, res) => {
 
 module.exports.destroyListing = async (req, res) => {
     let { id } = req.params;
+    console.log(id);
     let deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);
     req.flash("success", "Listing deleted");
